@@ -27,9 +27,11 @@ public:
 
   ///* state vector: [pos1 pos2 vel_abs yaw_angle yaw_rate] in SI units and rad
   VectorXd x_;
+  //VectorXd x_lidar_;
 
   ///* state covariance matrix
   MatrixXd P_;
+  //MatrixXd P_lidar_;
 
   MatrixXd F_;
 
@@ -40,7 +42,7 @@ public:
   MatrixXd H_;
 
   // measurement covariance matrix
-  MatrixXd R_;
+  //MatrixXd R_;
 
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
@@ -72,8 +74,16 @@ public:
   ///* Weights of sigma points
   VectorXd weights_;
 
+  MatrixXd Zsig;
+  MatrixXd Zsig_lidar;
+
+  int Iteration_ = 0;
+
   ///* State dimension
   int n_x_;
+
+  int n_z_;
+  int n_z_lidar_;
 
   ///* Augmented state dimension
   int n_aug_;
@@ -118,7 +128,10 @@ public:
    * Updates the state and the state covariance matrix using a laser measurement
    * @param meas_package The measurement at k+1
    */
-  void UpdateLidar(MeasurementPackage meas_package);
+  //void UpdateLidar(MeasurementPackage meas_package);
+  void UpdateLidar(MeasurementPackage meas_package, VectorXd z_pred, MatrixXd S_in);
+  void PredictLidarMeasurement(MeasurementPackage meas_package,
+                              VectorXd* z_out, MatrixXd* S_out);
 
   void PredictRadarMeasurement(MeasurementPackage meas_package,
                               VectorXd* z_out, MatrixXd* S_out);
